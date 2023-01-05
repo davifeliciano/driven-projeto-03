@@ -126,24 +126,21 @@ header,
 .item {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     padding: 10px;
     padding-bottom: 5px;
     width: 160px;
     min-width: 160px;
-    height: 100%;
     border: 5px solid white;
     border-radius: 9px;
     background-color: white;
     font-size: 1.6rem;
 }
 
-.item>*+* {
-    margin-top: 4px;
-}
-
 .item img {
     width: 150px;
     height: auto;
+    margin-bottom: 4px;
     border-radius: 4px;
 }
 
@@ -152,9 +149,9 @@ header,
     color: var(--dark-text-color);
 }
 
-.item>span {
+.item-description span {
+    display: block;
     font-size: 1.5rem;
-    line-height: 1.7rem;
     font-weight: 300;
     color: var(--light-text-color);
 }
@@ -163,6 +160,7 @@ header,
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 4px;
 }
 
 .price-container ion-icon {
