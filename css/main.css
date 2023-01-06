@@ -102,7 +102,7 @@ header,
     margin-left: var(--base-inline-spacing);
 }
 
-.items {
+.item-container {
     display: flex;
     gap: 16px;
     width: 100vw;
@@ -111,7 +111,7 @@ header,
     scrollbar-width: 0;
 }
 
-.items::-webkit-scrollbar {
+.item-container::-webkit-scrollbar {
     display: none;
 }
 
