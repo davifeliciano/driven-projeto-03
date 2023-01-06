@@ -52,7 +52,7 @@
                 <span>Acompanha arroz colorido soltinho</span>
               </div>
               <div class="price-container">
-                <span>R$ 19,90</span>
+                <span class="item-price">R$ 19,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -66,7 +66,7 @@
                 <span>Acompanha arroz colorido soltinho</span>
               </div>
               <div class="price-container">
-                <span>R$ 22,90</span>
+                <span class="item-price">R$ 22,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -80,7 +80,7 @@
                 <span>Acompanha arroz colorido soltinho</span>
               </div>
               <div class="price-container">
-                <span>R$ 22,90</span>
+                <span class="item-price">R$ 22,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -94,7 +94,7 @@
                 <span>Acompanha arroz colorido soltinho</span>
               </div>
               <div class="price-container">
-                <span>R$ 28,90</span>
+                <span class="item-price">R$ 28,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -108,7 +108,7 @@
                 <span>Com carne e legumes</span>
               </div>
               <div class="price-container">
-                <span>R$ 22,90</span>
+                <span class="item-price">R$ 22,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -122,7 +122,7 @@
                 <span>Com lombo de porco empanado</span>
               </div>
               <div class="price-container">
-                <span>R$ 22,90</span>
+                <span class="item-price">R$ 22,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -145,7 +145,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 4,90</span>
+                <span class="item-price">R$ 4,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -163,7 +163,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 4,90</span>
+                <span class="item-price">R$ 4,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -181,7 +181,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 4,90</span>
+                <span class="item-price">R$ 4,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -199,7 +199,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 4,90</span>
+                <span class="item-price">R$ 4,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -217,7 +217,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 5,50</span>
+                <span class="item-price">R$ 5,50</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -242,7 +242,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 9,90</span>
+                <span class="item-price">R$ 9,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -260,7 +260,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 5,90</span>
+                <span class="item-price">R$ 5,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -278,7 +278,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 5,90</span>
+                <span class="item-price">R$ 5,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -296,7 +296,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 4,90</span>
+                <span class="item-price">R$ 4,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -314,7 +314,7 @@
                 </span>
               </div>
               <div class="price-container">
-                <span>R$ 4,90</span>
+                <span class="item-price">R$ 4,90</span>
                 <ion-icon name="checkmark-circle"></ion-icon>
               </div>
             </div>
@@ -322,8 +322,32 @@
         </div>
       </div>
       <div class="order-button-container">
-        <button disabled>
+        <button onclick="getOrder()" disabled>
           Selecione os 3 itens para fechar o pedido
+        </button>
+      </div>
+    </div>
+    <div class="modal-container hidden">
+      <div class="modal">
+        <h2>
+          Confirme seu pedido
+        </h2>
+        <div class="order-summary">
+          <div class="summary-item meal">
+          </div>
+          <div class="summary-item meal">
+          </div>
+          <div class="summary-item meal">
+          </div>
+          <div class="summary-item total">
+            <span>Total</span>
+          </div>
+        </div>
+        <button class="confirm-btn">
+          Tudo certo, pode pedir!
+        </button>
+        <button class="cancel-btn">
+          Cancelar
         </button>
       </div>
     </div>
