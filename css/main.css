@@ -56,6 +56,7 @@ header,
     width: 100%;
     min-height: var(--header-footer-height);
     padding-inline: var(--base-inline-spacing);
+    z-index: 2;
 }
 
 .order-button-container {
@@ -98,7 +99,6 @@ header,
     font-size: 2.6rem;
     font-weight: 400;
     color: var(--dark-text-color);
-    margin-bottom: 10px;
     margin-left: var(--base-inline-spacing);
 }
 
@@ -106,7 +106,7 @@ header,
     display: flex;
     gap: 16px;
     width: 100vw;
-    padding-bottom: 10px;
+    padding-block: 10px;
     overflow-x: scroll;
     scrollbar-width: 0;
 }
@@ -135,6 +135,7 @@ header,
     border-radius: 9px;
     background-color: white;
     font-size: 1.6rem;
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .25));
 }
 
 .item img {
