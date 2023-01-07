@@ -322,12 +322,12 @@
         </div>
       </div>
       <div class="order-button-container">
-        <button onclick="getOrder()" disabled>
+        <button onclick="showOrderModal()" disabled>
           Selecione os 3 itens para fechar o pedido
         </button>
       </div>
     </div>
-    <div class="modal-container hidden">
+    <div id="order-modal" class="modal-container hidden">
       <div class="modal">
         <h2>
           Confirme seu pedido
@@ -343,8 +343,34 @@
             <span>Total</span>
           </div>
         </div>
-        <button class="confirm-btn">
+        <button onclick="showUserFormModal()" class="confirm-btn">
           Tudo certo, pode pedir!
+        </button>
+        <button class="cancel-btn">
+          Cancelar
+        </button>
+      </div>
+    </div>
+    <div id="user-form-modal" class="modal-container hidden">
+      <div class="modal">
+        <h2>
+          Insira seus dados
+        </h2>
+        <div class="input-container">
+          <label for="fullname">
+            Seu nome
+          </label>
+          <input type="text" name="fullname" id="fullname">
+          <label for="address">
+            Seu endereço
+          </label>
+          <input type="text" name="address" id="address">
+        </div>
+        <button class="confirm-btn">
+          Finalizar Pedido
+          <span>
+            <ion-icon name="logo-whatsapp"></ion-icon>
+          </span>
         </button>
         <button class="cancel-btn">
           Cancelar

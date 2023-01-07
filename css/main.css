@@ -7,7 +7,7 @@
     --disabled-color: #CBCBCB;
     --modal-color: #50D074;
     --header-footer-height: 9.2rem;
-    --base-inline-spacing: 20px;
+    --base-inline-spacing: 2rem;
 }
 
 html {
@@ -208,12 +208,13 @@ header,
     gap: 16px;
     width: 90vw;
     max-width: 400px;
-
+    max-height: 90vw;
     padding: 20px 26px;
     border-radius: 9px;
     font-size: 2.2rem;
     color: white;
     background-color: var(--modal-color);
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
 }
 
 .modal h2 {
@@ -244,6 +245,7 @@ header,
     padding-inline: var(--height);
     border: none;
     border-radius: var(--height);
+    background-color: white;
     color: var(--modal-color);
     font-weight: 500;
 }
@@ -254,4 +256,36 @@ header,
     font-size: 2rem;
     font-weight: 500;
     color: white;
+}
+
+.input-container label {
+    margin-left: var(--base-inline-spacing);
+    font-size: 1.5rem;
+}
+
+.input-container input {
+    width: 100%;
+    min-height: calc(2 * var(--base-inline-spacing));
+    border: none;
+    padding-inline: var(--base-inline-spacing);
+    border-radius: var(--base-inline-spacing);
+    color: var(--dark-text-color);
+    background-color: white;
+}
+
+.input-container input:focus {
+    outline: 5px solid var(--highlight-color);
+}
+
+#user-form-modal .confirm-btn {
+    position: relative;
+}
+
+#user-form-modal .confirm-btn ion-icon {
+    --font-size: 3.2rem;
+    font-size: var(--font-size);
+    position: absolute;
+    right: calc(0.5 * var(--font-size));
+    top: 50%;
+    transform: translateY(-50%);
 }

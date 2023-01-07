@@ -2,7 +2,7 @@
 
 const itemContainers = document.querySelectorAll(".item-container");
 const orderButton = document.querySelector(".order-button-container > button");
-const modalContainer = document.querySelector(".modal-container");
+const orderModalContainer = document.querySelector("#order-modal");
 const brlFormat = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
@@ -75,32 +75,37 @@ function selectItem() {
   orderButton.removeAttribute("disabled");
 }
 
-function getOrder() {
+function showOrderModal() {
   const allSelectedItems = getAllSelectedItems();
   const prices = allSelectedItems.map(getItemPriceInCents);
-  const orderSummaryItems =
-    modalContainer.querySelectorAll(".summary-item.meal");
+  const orderItems = orderModalContainer.querySelectorAll(".summary-item.meal");
 
   // Adicionando informações dos itens selecionados
   for (let i = 0; i < allSelectedItems.length; i++) {
     const item = allSelectedItems[i];
     const nameSpan = document.createElement("span");
     nameSpan.textContent = getItemName(item);
-    orderSummaryItems[i].appendChild(nameSpan);
+    orderItems[i].appendChild(nameSpan);
     const priceSpan = document.createElement("span");
     priceSpan.textContent = formatPrice(prices[i], false);
-    orderSummaryItems[i].appendChild(priceSpan);
+    orderItems[i].appendChild(priceSpan);
   }
 
   // Adicionando total do pedido em order-summary
-  const orderSummaryTotal = modalContainer.querySelector(".summary-item.total");
+  const orderTotal = orderModalContainer.querySelector(".summary-item.total");
   const totalPrice = formatPrice(sumArray(prices));
   const totalSpan = document.createElement("span");
   totalSpan.textContent = totalPrice;
-  orderSummaryTotal.appendChild(totalSpan);
+  orderTotal.appendChild(totalSpan);
 
-  // Exibindo modal
-  modalContainer.classList.remove("hidden");
+  // Exibindo modal com o resumo do pedido
+  orderModalContainer.classList.remove("hidden");
+}
+
+function showUserFormModal() {
+  const userFormModal = document.querySelector("#user-form-modal");
+  orderModalContainer.classList.add("hidden");
+  userFormModal.classList.remove("hidden");
 }
 
 window.onload = () => {
