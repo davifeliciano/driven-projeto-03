@@ -54,7 +54,7 @@ function getAllSelectedItems() {
 
 function getItemName(item) {
   // Dado um item, retorna o nome do item
-  return item.querySelector("h3").textContent;
+  return item.querySelector(".item-name").textContent;
 }
 
 function getItemPriceInCents(item) {

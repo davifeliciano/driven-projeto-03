@@ -146,7 +146,7 @@ header,
     border-radius: 4px;
 }
 
-.item h3 {
+.item .item-name {
     font-weight: 700;
     color: var(--dark-text-color);
 }
