@@ -258,9 +258,15 @@ header,
     color: white;
 }
 
-.input-container label {
+.input-container label,
+.form-hint {
     margin-left: var(--base-inline-spacing);
     font-size: 1.5rem;
+}
+
+.form-hint {
+    margin-top: 2px;
+    color: var(--main-color);
 }
 
 .input-container input {
@@ -277,11 +283,15 @@ header,
     outline: 5px solid var(--highlight-color);
 }
 
-#user-form-modal .confirm-btn {
+.input-container .confirm-btn {
+    margin-top: 16px;
+}
+
+#order-modal .confirm-btn {
     position: relative;
 }
 
-#user-form-modal .confirm-btn ion-icon {
+#order-modal .confirm-btn ion-icon {
     --font-size: 3.2rem;
     font-size: var(--font-size);
     position: absolute;

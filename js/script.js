@@ -1,8 +1,11 @@
 "use strict";
 
+const phoneNumber = "5561999999999"; // Telefone do restaurante
 const itemContainers = document.querySelectorAll(".item-container");
 const orderButton = document.querySelector(".order-button-container > button");
-const orderModalContainer = document.querySelector("#order-modal");
+const fullnameInput = document.querySelector("#fullname");
+const addressInput = document.querySelector("#address");
+const formHint = document.querySelector(".input-container .form-hint");
 const brlFormat = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
@@ -17,7 +20,8 @@ function sumArray(array) {
 
 function convertPrice(priceInCents) {
   // Dado um preço em centavos (int), converter para reais (float)
-  return priceInCents / 100;
+  const centsInADollar = 100;
+  return priceInCents / centsInADollar;
 }
 
 function formatPrice(priceInCents, leadingUnit = true) {
@@ -27,9 +31,10 @@ function formatPrice(priceInCents, leadingUnit = true) {
   if (leadingUnit === true) return brlFormat.format(convertPrice(priceInCents));
   const formattedPriceArray = brlFormat.formatToParts(
     convertPrice(priceInCents)
-  );
+  ); // ["R$", " ", "XX", ",", "XX"]
+  const priceStartPosition = 2;
   return formattedPriceArray
-    .slice(2)
+    .slice(priceStartPosition) // Dipensa ["R$", " "]
     .map((obj) => obj.value)
     .join("");
 }
@@ -75,10 +80,31 @@ function selectItem() {
   orderButton.removeAttribute("disabled");
 }
 
+function getUserInfo() {
+  /* Retorna um objeto com fullname e address do usuário
+     se houver. Do contário, retorna null */
+  for (const value of [fullname, address]) {
+    if (value === "") return null;
+  }
+  return { fullname: fullname, address: address };
+}
+
+function hideAllModals() {
+  // Esconde todos os modals
+  const modals = document.querySelectorAll(".modal-container");
+  for (const modal of modals) modal.classList.add("hidden");
+}
+
 function showOrderModal() {
+  // Checa se os campos de nome e endereço não estão em branco
+  if (getUserInfo() !== null) {
+    formHint.classList.remove("hidden");
+  }
+
+  const orderModal = document.querySelector("#order-modal");
   const allSelectedItems = getAllSelectedItems();
   const prices = allSelectedItems.map(getItemPriceInCents);
-  const orderItems = orderModalContainer.querySelectorAll(".summary-item.meal");
+  const orderItems = orderModal.querySelectorAll(".summary-item.meal");
 
   // Adicionando informações dos itens selecionados
   for (let i = 0; i < allSelectedItems.length; i++) {
@@ -92,25 +118,66 @@ function showOrderModal() {
   }
 
   // Adicionando total do pedido em order-summary
-  const orderTotal = orderModalContainer.querySelector(".summary-item.total");
+  const orderTotal = orderModal.querySelector(".summary-item.total");
   const totalPrice = formatPrice(sumArray(prices));
   const totalSpan = document.createElement("span");
   totalSpan.textContent = totalPrice;
   orderTotal.appendChild(totalSpan);
 
   // Exibindo modal com o resumo do pedido
-  orderModalContainer.classList.remove("hidden");
+  hideAllModals();
+  orderModal.classList.remove("hidden");
 }
 
 function showUserFormModal() {
   const userFormModal = document.querySelector("#user-form-modal");
-  orderModalContainer.classList.add("hidden");
+  hideAllModals();
   userFormModal.classList.remove("hidden");
+  fullnameInput.focus();
+}
+
+function getWhatsAppUrl(fullname, address) {
+  const items = getAllSelectedItems();
+  if (items === null) return;
+
+  const prices = items.map(getItemPriceInCents);
+  const totalPrice = formatPrice(sumArray(prices));
+  const message = encodeURI(`Olá, gostaria de fazer o pedido:
+- Prato: ${getItemName(items[0])}
+- Bebida: ${getItemName(items[1])}
+- Sobremesa: ${getItemName(items[2])}
+Total: ${totalPrice}
+
+Nome: ${fullname}
+Endereço: ${address}`);
+
+  return `https://wa.me/${phoneNumber}?text=${message}`;
+}
+
+function redirectUser() {
+  // Redireciona o usuário para uma
+  const fullname = fullnameInput.value.trim();
+  const address = addressInput.value.trim();
+  const whatsAppUrl = getWhatsAppUrl(fullname, address);
+  window.location.replace(whatsAppUrl);
 }
 
 window.onload = () => {
+  // Chame selectItem quando um card é clicado
   const items = document.querySelectorAll(".item");
   items.forEach((item) => {
     item.addEventListener("click", selectItem);
+  });
+
+  /* Coloque o foco no input #address ao pressionar
+     Enter quando o input #fullname estiver em foco */
+  fullnameInput.addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) addressInput.focus();
+  });
+
+  /* Chame showOrderModal ao pressionar Enter
+     quando o input #address estiver em foco */
+  addressInput.addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) showOrderModal();
   });
 };
