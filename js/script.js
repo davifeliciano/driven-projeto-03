@@ -102,6 +102,7 @@ function showOrderModal() {
   // Checa se os campos de nome e endereço não estão em branco
   if (getUserInfo() === null) {
     formHint.classList.remove("hidden");
+    return;
   }
 
   const orderModal = document.querySelector("#order-modal");
