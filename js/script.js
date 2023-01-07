@@ -54,12 +54,12 @@ function getAllSelectedItems() {
 
 function getItemName(item) {
   // Dado um item, retorna o nome do item
-  return item.querySelector("h3").innerText;
+  return item.querySelector("h3").textContent;
 }
 
 function getItemPriceInCents(item) {
   // Dado um item, retorna seu preço em centavos
-  const itemPriceFullString = item.querySelector(".item-price").innerText;
+  const itemPriceFullString = item.querySelector(".item-price").textContent;
   //    ^ Preço com unidade, i.e. "R$ XX,XX"
   const [_, itemPriceString] = itemPriceFullString.split(" ");
   //        ^ Preço sem unidade, i.e. "XX,XX"
@@ -77,12 +77,15 @@ function selectItem() {
   // Nesse caso, ative o botão de pedido
   for (const itemContainer of itemContainers)
     if (getSelectedItem(itemContainer) === null) return;
+  orderButton.textContent = "Fechar Pedido";
   orderButton.removeAttribute("disabled");
 }
 
 function getUserInfo() {
   /* Retorna um objeto com fullname e address do usuário
      se houver. Do contário, retorna null */
+  const fullname = fullnameInput.value.trim();
+  const address = addressInput.value.trim();
   for (const value of [fullname, address]) {
     if (value === "") return null;
   }
@@ -97,7 +100,7 @@ function hideAllModals() {
 
 function showOrderModal() {
   // Checa se os campos de nome e endereço não estão em branco
-  if (getUserInfo() !== null) {
+  if (getUserInfo() === null) {
     formHint.classList.remove("hidden");
   }
 
@@ -156,9 +159,8 @@ Endereço: ${address}`);
 
 function redirectUser() {
   // Redireciona o usuário para uma
-  const fullname = fullnameInput.value.trim();
-  const address = addressInput.value.trim();
-  const whatsAppUrl = getWhatsAppUrl(fullname, address);
+  const userInfo = getUserInfo();
+  const whatsAppUrl = getWhatsAppUrl(userInfo.fullname, userInfo.address);
   window.location.replace(whatsAppUrl);
 }
 
