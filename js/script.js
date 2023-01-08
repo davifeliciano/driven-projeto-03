@@ -12,6 +12,9 @@ const brlFormat = new Intl.NumberFormat("pt-BR", {
   currency: "BRL",
 });
 
+// Global para guardar informações do usuário
+const userInfo = { fullname: "", address: "" };
+
 function sumArray(array) {
   // Dado um array, retorna a soma de seus elementos
   let sum = 0;
@@ -41,10 +44,13 @@ function formatPrice(priceInCents, leadingUnit = true) {
   );
 
   const priceStartPosition = 2;
-  return formattedPriceArray
-    .slice(priceStartPosition) // Dipensa ["R$", " "]
-    .map((obj) => obj.value)
-    .join("");
+  return (
+    formattedPriceArray
+      // Dipensa ["R$", " "]
+      .slice(priceStartPosition)
+      .map((obj) => obj.value)
+      .join("")
+  );
 }
 
 function getSelectedItem(itemContainer) {
@@ -101,16 +107,16 @@ function selectItem() {
 }
 
 function getUserInfo() {
-  /* Retorna um objeto com fullname e address do usuário
-     se houver. Do contário, retorna null */
-  const fullname = fullnameInput.value.trim();
-  const address = addressInput.value.trim();
-  for (const value of [fullname, address]) {
-    if (value === "") {
-      return null;
+  /* Exibe uma sequencia de prompts pedindo nome e endereço
+     do usuário, populando a global userInfo com os resultados */
+  const fullname = prompt("Insira seu nome").trim();
+  const address = prompt("Insira seu endereço").trim();
+  const retrievedUserInfo = { fullname, address };
+  for (const [key, value] of Object.entries(retrievedUserInfo)) {
+    if (value !== null) {
+      userInfo[key] = value;
     }
   }
-  return { fullname: fullname, address: address };
 }
 
 function hideAllModals() {
@@ -122,11 +128,7 @@ function hideAllModals() {
 }
 
 function showOrderModal() {
-  // Checa se os campos de nome e endereço não estão em branco
-  if (getUserInfo() === null) {
-    formHint.classList.remove("hidden");
-    return;
-  }
+  getUserInfo();
 
   const orderModal = document.querySelector("#order-modal");
   const allSelectedItems = getAllSelectedItems();
@@ -156,38 +158,44 @@ function showOrderModal() {
   orderModal.classList.remove("hidden");
 }
 
-function showUserFormModal() {
-  const userFormModal = document.querySelector("#user-form-modal");
-  hideAllModals();
-  userFormModal.classList.remove("hidden");
-  fullnameInput.focus();
-}
-
-function getWhatsAppUrl(fullname, address) {
+function getWhatsAppUrl() {
   const items = getAllSelectedItems();
   if (items === null) {
     return null;
   }
 
+  const [dishName, drinkName, dessertName] = items.map(getItemName);
   const prices = items.map(getItemPriceInCents);
   const totalPrice = formatPrice(sumArray(prices));
-  const message = encodeURI(`Olá, gostaria de fazer o pedido:
-- Prato: ${getItemName(items[0])}
-- Bebida: ${getItemName(items[1])}
-- Sobremesa: ${getItemName(items[2])}
-Total: ${totalPrice}
 
-Nome: ${fullname}
-Endereço: ${address}`);
+  let message = `Olá, gostaria de fazer o pedido:
+- Prato: ${dishName}
+- Bebida: ${drinkName}
+- Sobremesa: ${dessertName}
+Total: ${totalPrice}`;
 
-  return `https://wa.me/${phoneNumber}?text=${message}`;
+  // Inclui informações do usuário na mensagem, se houver
+  const userInfoLabels = { fullname: "Nome", address: "Endereço" };
+  let insertedLineFeed = false;
+
+  for (const [key, value] of Object.entries(userInfo)) {
+    if (value !== "") {
+      if (!insertedLineFeed) {
+        message += "\n";
+        insertedLineFeed = true;
+        console.log("!insertedLineFeed");
+      }
+      message += `\n${userInfoLabels[key]}: ${value}`;
+    }
+  }
+
+  return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 }
 
 function redirectUser() {
   /* Redireciona o usuário para uma conversa com o restaurante
      contendo uma mensagem pré carregada com o pedido */
-  const userInfo = getUserInfo();
-  const whatsAppUrl = getWhatsAppUrl(userInfo.fullname, userInfo.address);
+  const whatsAppUrl = getWhatsAppUrl();
   window.location.replace(whatsAppUrl);
 }
 
@@ -211,38 +219,13 @@ window.onload = () => {
     item.addEventListener("click", selectItem);
   });
 
-  /* Coloque o foco no input #address ao pressionar
-     Enter quando o input #fullname estiver em foco */
-  fullnameInput.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      addressInput.focus();
-    }
-  });
-
-  /* Chame showOrderModal ao pressionar Enter
-     quando o input #address estiver em foco */
-  addressInput.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      showOrderModal();
-    }
-  });
-
   /* Esconda todos os modals ao pressionar qualquer
      botão de Cancelar */
   const cancelButtons = document.querySelectorAll(".cancel-btn");
   for (const cancelButton of cancelButtons) {
-    cancelButton.addEventListener("click", (event) => {
+    cancelButton.addEventListener("click", () => {
       clearOrderModal();
       hideAllModals();
     });
   }
-
-  /* Esconda todos os modais e mostre o modal dos dados
-     do usuário ao clicar no botão de voltar */
-  const backButton = document.querySelector(".back-btn");
-  backButton.addEventListener("click", (event) => {
-    clearOrderModal();
-    hideAllModals();
-    showUserFormModal();
-  });
 };

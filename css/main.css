@@ -215,7 +215,6 @@ header,
     color: white;
     background-color: var(--modal-color);
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
-    position: relative;
 }
 
 .modal h2 {
@@ -257,25 +256,6 @@ header,
     font-size: 2rem;
     font-weight: 500;
     color: white;
-}
-
-.modal .back-btn {
-    --margin: calc(0.5 * var(--base-inline-spacing));
-    margin-top: var(--margin);
-    margin-left: var(--margin);
-    padding: 0;
-    display: flex;
-    align-items: center;
-    border: none;
-    background-color: transparent;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.modal .back-btn ion-icon {
-    color: white;
-    font-size: 4rem;
 }
 
 .input-container label,

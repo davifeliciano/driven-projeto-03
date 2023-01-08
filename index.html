@@ -322,7 +322,7 @@
         </div>
       </div>
       <div class="order-button-container">
-        <button onclick="showUserFormModal()" disabled data-test="order-btn">
+        <button onclick="showOrderModal()" disabled data-test="order-btn">
           Selecione os 3 itens para fechar o pedido
         </button>
       </div>
@@ -352,35 +352,6 @@
           </span>
         </button>
         <button class="cancel-btn" data-test="cancel-order-btn">
-          Cancelar
-        </button>
-        <button class="back-btn">
-          <ion-icon name="chevron-back-circle"></ion-icon>
-        </button>
-      </div>
-    </div>
-    <div id="user-form-modal" class="modal-container hidden">
-      <div class="modal">
-        <h2>
-          Insira seus dados
-        </h2>
-        <form class="input-container">
-          <label for="fullname">
-            Seu nome
-          </label>
-          <input type="text" name="fullname" id="fullname">
-          <label for="address">
-            Seu endereço
-          </label>
-          <input type="text" name="address" id="address">
-          <div class="form-hint hidden">
-            Preencha os campos acima
-          </div>
-        </form>
-        <button onclick="showOrderModal()" class="confirm-btn">
-          Finalizar Pedido
-        </button>
-        <button class="cancel-btn">
           Cancelar
         </button>
       </div>
