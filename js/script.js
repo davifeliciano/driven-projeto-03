@@ -1,6 +1,7 @@
 "use strict";
 
-const phoneNumber = "5561999999999"; // Telefone do restaurante
+// Telefone do restaurante
+const phoneNumber = "5561999999999";
 const itemContainers = document.querySelectorAll(".item-container");
 const orderButton = document.querySelector(".order-button-container > button");
 const fullnameInput = document.querySelector("#fullname");
@@ -14,7 +15,9 @@ const brlFormat = new Intl.NumberFormat("pt-BR", {
 function sumArray(array) {
   // Dado um array, retorna a soma de seus elementos
   let sum = 0;
-  for (const value of array) sum += value;
+  for (const value of array) {
+    sum += value;
+  }
   return sum;
 }
 
@@ -25,13 +28,18 @@ function convertPrice(priceInCents) {
 }
 
 function formatPrice(priceInCents, leadingUnit = true) {
-  /* Dado um preço em centavos (int), retorna uma string no 
+  /* Dado um preço em centavos (int), retorna uma string no
      formato "R$ XX,XX" se leadingUnit === true, do contrario
      usa o formato "XX,XX" */
-  if (leadingUnit === true) return brlFormat.format(convertPrice(priceInCents));
+  if (leadingUnit === true) {
+    return brlFormat.format(convertPrice(priceInCents));
+  }
+
+  // Array no formato ["R$", " ", "XX", ",", "XX"]
   const formattedPriceArray = brlFormat.formatToParts(
     convertPrice(priceInCents)
-  ); // ["R$", " ", "XX", ",", "XX"]
+  );
+
   const priceStartPosition = 2;
   return formattedPriceArray
     .slice(priceStartPosition) // Dipensa ["R$", " "]
@@ -47,8 +55,10 @@ function getSelectedItem(itemContainer) {
 function getAllSelectedItems() {
   // Retorna todos os itens selecionados
   const allSelectedItems = [];
-  for (const itemContainer of itemContainers)
+  for (const itemContainer of itemContainers) {
     allSelectedItems.push(itemContainer.querySelector(".selected"));
+  }
+
   return allSelectedItems;
 }
 
@@ -67,16 +77,25 @@ function getItemPriceInCents(item) {
 }
 
 function selectItem() {
-  if (this.classList.contains("selected")) return;
+  if (this.classList.contains("selected")) {
+    return;
+  }
+
   // Remova a classe de todos os irmãos
-  for (const sibling of this.parentElement.children)
+  for (const sibling of this.parentElement.children) {
     sibling.classList.remove("selected");
+  }
+
   // Adiciona a classe selected ao elemento clicado
   this.classList.add("selected");
-  // Checa se as 3 categorias tem itens selecionados
-  // Nesse caso, ative o botão de pedido
-  for (const itemContainer of itemContainers)
-    if (getSelectedItem(itemContainer) === null) return;
+  /* Checa se as 3 categorias tem itens selecionados
+     Nesse caso, ative o botão de pedido */
+  for (const itemContainer of itemContainers) {
+    if (getSelectedItem(itemContainer) === null) {
+      return;
+    }
+  }
+
   orderButton.textContent = "Fechar Pedido";
   orderButton.removeAttribute("disabled");
 }
@@ -87,7 +106,9 @@ function getUserInfo() {
   const fullname = fullnameInput.value.trim();
   const address = addressInput.value.trim();
   for (const value of [fullname, address]) {
-    if (value === "") return null;
+    if (value === "") {
+      return null;
+    }
   }
   return { fullname: fullname, address: address };
 }
@@ -95,7 +116,9 @@ function getUserInfo() {
 function hideAllModals() {
   // Esconde todos os modals
   const modals = document.querySelectorAll(".modal-container");
-  for (const modal of modals) modal.classList.add("hidden");
+  for (const modal of modals) {
+    modal.classList.add("hidden");
+  }
 }
 
 function showOrderModal() {
@@ -142,7 +165,9 @@ function showUserFormModal() {
 
 function getWhatsAppUrl(fullname, address) {
   const items = getAllSelectedItems();
-  if (items === null) return;
+  if (items === null) {
+    return null;
+  }
 
   const prices = items.map(getItemPriceInCents);
   const totalPrice = formatPrice(sumArray(prices));
@@ -175,12 +200,16 @@ window.onload = () => {
   /* Coloque o foco no input #address ao pressionar
      Enter quando o input #fullname estiver em foco */
   fullnameInput.addEventListener("keyup", (event) => {
-    if (event.keyCode === 13) addressInput.focus();
+    if (event.key === "Enter") {
+      addressInput.focus();
+    }
   });
 
   /* Chame showOrderModal ao pressionar Enter
      quando o input #address estiver em foco */
   addressInput.addEventListener("keyup", (event) => {
-    if (event.keyCode === 13) showOrderModal();
+    if (event.key === "Enter") {
+      showOrderModal();
+    }
   });
 };
