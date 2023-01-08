@@ -64,12 +64,12 @@ function getAllSelectedItems() {
 
 function getItemName(item) {
   // Dado um item, retorna o nome do item
-  return item.querySelector(".item-name").textContent;
+  return item.querySelector(".item-name").innerText;
 }
 
 function getItemPriceInCents(item) {
   // Dado um item, retorna seu preço em centavos
-  const itemPriceFullString = item.querySelector(".item-price").textContent;
+  const itemPriceFullString = item.querySelector(".item-price").innerText;
   //    ^ Preço com unidade, i.e. "R$ XX,XX"
   const [_, itemPriceString] = itemPriceFullString.split(" ");
   //        ^ Preço sem unidade, i.e. "XX,XX"
@@ -96,7 +96,7 @@ function selectItem() {
     }
   }
 
-  orderButton.textContent = "Fechar Pedido";
+  orderButton.innerText = "Fechar Pedido";
   orderButton.removeAttribute("disabled");
 }
 
@@ -137,10 +137,10 @@ function showOrderModal() {
   for (let i = 0; i < allSelectedItems.length; i++) {
     const item = allSelectedItems[i];
     const nameSpan = document.createElement("span");
-    nameSpan.textContent = getItemName(item);
+    nameSpan.innerText = getItemName(item);
     orderItems[i].appendChild(nameSpan);
     const priceSpan = document.createElement("span");
-    priceSpan.textContent = formatPrice(prices[i], false);
+    priceSpan.innerText = formatPrice(prices[i], false);
     orderItems[i].appendChild(priceSpan);
   }
 
@@ -148,7 +148,7 @@ function showOrderModal() {
   const orderTotal = orderModal.querySelector(".summary-item.total");
   const totalPrice = formatPrice(sumArray(prices));
   const totalSpan = document.createElement("span");
-  totalSpan.textContent = totalPrice;
+  totalSpan.innerText = totalPrice;
   orderTotal.appendChild(totalSpan);
 
   // Exibindo modal com o resumo do pedido
