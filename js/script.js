@@ -184,10 +184,24 @@ Endereço: ${address}`);
 }
 
 function redirectUser() {
-  // Redireciona o usuário para uma
+  /* Redireciona o usuário para uma conversa com o restaurante
+     contendo uma mensagem pré carregada com o pedido */
   const userInfo = getUserInfo();
   const whatsAppUrl = getWhatsAppUrl(userInfo.fullname, userInfo.address);
   window.location.replace(whatsAppUrl);
+}
+
+function clearOrderModal() {
+  // Limpa as informações do modal com o resumo do pedido
+  const modalItems = document.querySelectorAll(".summary-item");
+  for (const modalItem of modalItems) {
+    if (modalItem.classList.contains("meal")) {
+      modalItem.innerHTML = "";
+    }
+    if (modalItem.classList.contains("total")) {
+      modalItem.removeChild(modalItem.lastChild);
+    }
+  }
 }
 
 window.onload = () => {
@@ -211,5 +225,24 @@ window.onload = () => {
     if (event.key === "Enter") {
       showOrderModal();
     }
+  });
+
+  /* Esconda todos os modals ao pressionar qualquer
+     botão de Cancelar */
+  const cancelButtons = document.querySelectorAll(".cancel-btn");
+  for (const cancelButton of cancelButtons) {
+    cancelButton.addEventListener("click", (event) => {
+      clearOrderModal();
+      hideAllModals();
+    });
+  }
+
+  /* Esconda todos os modais e mostre o modal dos dados
+     do usuário ao clicar no botão de voltar */
+  const backButton = document.querySelector(".back-btn");
+  backButton.addEventListener("click", (event) => {
+    clearOrderModal();
+    hideAllModals();
+    showUserFormModal();
   });
 };
