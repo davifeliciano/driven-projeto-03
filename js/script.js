@@ -4,6 +4,9 @@
 const phoneNumber = "5561999999999";
 const itemContainers = document.querySelectorAll(".item-container");
 const orderButton = document.querySelector(".order-button-container > button");
+const modalContainer = document.querySelector(".modal-container");
+const userFormModal = modalContainer.querySelector("#user-form-modal");
+const orderModal = modalContainer.querySelector("#order-modal");
 const fullnameInput = document.querySelector("#fullname");
 const addressInput = document.querySelector("#address");
 const formHint = document.querySelector(".input-container .form-hint");
@@ -77,6 +80,7 @@ function getItemPriceInCents(item) {
 }
 
 function selectItem() {
+  /* Função chamada ao clicar em qualquer card */
   if (this.classList.contains("selected")) {
     return;
   }
@@ -113,22 +117,96 @@ function getUserInfo() {
   return { fullname: fullname, address: address };
 }
 
-function hideAllModals() {
-  // Esconde todos os modals
-  const modals = document.querySelectorAll(".modal-container");
-  for (const modal of modals) {
-    modal.classList.add("hidden");
+function showModalContainer() {
+  if (!modalContainer.classList.contains("hidden")) {
+    return;
   }
+
+  modalContainer.classList.remove("hidden");
+  const keyframes = { backgroundColor: "rgba(255, 255, 255, 0.9)" };
+  const options = {
+    duration: 500,
+    easing: "ease",
+    fill: "forwards",
+  };
+  modalContainer.animate(keyframes, options);
+}
+
+function hideModalContainer() {
+  const keyframes = { backgroundColor: "rgba(255, 255, 255, 0.0)" };
+  const options = {
+    duration: 500,
+    easing: "ease",
+    fill: "forwards",
+  };
+  modalContainer.animate(keyframes, options).addEventListener("finish", () => {
+    modalContainer.classList.add("hidden");
+  });
+}
+
+function showModal(modal) {
+  // Centraliza o elemento modal na tela com uma animação
+  const keyframes = {
+    top: "50%",
+    right: 0,
+    transform: "translate(50%, -50%)",
+  };
+  const options = {
+    duration: 500,
+    easing: "ease-in",
+    direction: "reverse",
+  };
+  modal.classList.remove("hidden");
+  modal.animate(keyframes, options);
+}
+
+function hideModal(hideContainer = false) {
+  /* Esconde o modal em exibição, se houver. Caso se o modal
+     corresponder a #order-modal limpa o model após o fim da animação
+     Se hideContainer === true, esconde o container */
+  const modal = modalContainer.querySelector(".modal:not(.hidden)");
+  if (modal === null) {
+    return;
+  }
+
+  const keyframes = {
+    top: "50%",
+    left: 0,
+    transform: "translate(-100%, -50%)",
+  };
+  const options = {
+    duration: 500,
+    easing: "ease",
+  };
+  modal.animate(keyframes, options).addEventListener("finish", () => {
+    modal.classList.add("hidden");
+    if (modal.id === "order-modal") {
+      clearOrderModal();
+    }
+    if (hideContainer === true) {
+      hideModalContainer();
+    }
+  });
+}
+
+function showUserFormModal() {
+  /* Função chamada com um clique no botão de Fechar Pedido
+     situado no footer */
+  showModalContainer();
+  showModal(userFormModal);
+  fullnameInput.focus();
 }
 
 function showOrderModal() {
+  /* Função chamada com um clique no botão de Fechar Pedido
+     no modal #user-info-modal */
   // Checa se os campos de nome e endereço não estão em branco
   if (getUserInfo() === null) {
     formHint.classList.remove("hidden");
     return;
   }
 
-  const orderModal = document.querySelector("#order-modal");
+  hideModal();
   const allSelectedItems = getAllSelectedItems();
   const prices = allSelectedItems.map(getItemPriceInCents);
   const orderItems = orderModal.querySelectorAll(".summary-item.meal");
@@ -152,18 +230,13 @@ function showOrderModal() {
   orderTotal.appendChild(totalSpan);
 
   // Exibindo modal com o resumo do pedido
-  hideAllModals();
-  orderModal.classList.remove("hidden");
-}
-
-function showUserFormModal() {
-  const userFormModal = document.querySelector("#user-form-modal");
-  hideAllModals();
-  userFormModal.classList.remove("hidden");
-  fullnameInput.focus();
+  showModal(orderModal);
 }
 
 function getWhatsAppUrl(fullname, address) {
+  /* Retorna uma URL para uma conversa com o restaurante
+     com a mensagem contendo as informações sobre o pedido
+     e os dados do usuário */
   const items = getAllSelectedItems();
   if (items === null) {
     return null;
@@ -232,8 +305,7 @@ window.onload = () => {
   const cancelButtons = document.querySelectorAll(".cancel-btn");
   for (const cancelButton of cancelButtons) {
     cancelButton.addEventListener("click", (event) => {
-      clearOrderModal();
-      hideAllModals();
+      hideModal(true);
     });
   }
 
@@ -241,8 +313,7 @@ window.onload = () => {
      do usuário ao clicar no botão de voltar */
   const backButton = document.querySelector(".back-btn");
   backButton.addEventListener("click", (event) => {
-    clearOrderModal();
-    hideAllModals();
+    hideModal();
     showUserFormModal();
   });
 };
