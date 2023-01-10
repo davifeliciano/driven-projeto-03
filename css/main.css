@@ -19,6 +19,10 @@ body {
     background-color: var(--background-color);
 }
 
+body:has(.modal-container:not(.hidden)) {
+    overflow: hidden;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -194,10 +198,6 @@ header,
 
 .hidden {
     display: none;
-}
-
-.freeze {
-    touch-action: none;
 }
 
 .modal {
